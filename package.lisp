@@ -1,4 +1,7 @@
 ;;;; package.lisp
 
 (defpackage #:formulador-lite
-  (:use #:cl))
+  (:use #:cl)
+
+  (:export
+   #:simple-draw))

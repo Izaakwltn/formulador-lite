@@ -18,7 +18,7 @@
 
 (alexa:define-string-lexer formulexer
   "A lexical analyzer for formulador input."
-  ((:oper   "[+*-]")
+  ((:oper   "[=+*-]")
    (:num  "\\d+")
    (:symb "[A-Za-z][A-Za-z0-9_]*"))
   ("{{OPER}}" (return (tok :operator (intern $@))))

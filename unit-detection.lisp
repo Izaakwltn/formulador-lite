@@ -22,11 +22,11 @@
 
 (defun detect-asm-chain (lexed-line)
   "Detects whether the first object is a member of an add/subtract/multiply chain."
-  (member (cdr (second lexed-line)) '(+ - *)))
+  (member (cdr (second lexed-line)) '(= + - * )))
 
 (defun detect-asm-chain-end (lexed-line)
   "Detects whether the asm chain should end."
-  (and (not (member (cdr (first lexed-line)) '(+ - *)))
+  (and (not (member (cdr (first lexed-line)) '(= + - * )))
        (not (member (car (first lexed-line)) '(:number :variable :block)))))
 
 (defun detect-frac (lexed-line)

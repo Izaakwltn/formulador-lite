@@ -17,19 +17,21 @@
 	       (make-parens-group
 		(nthcdr (deep-length (make-parens-group (rest lexed-list)))
 			lexed-list))))
-	((detect-asm-chain lexed-list)
-	 (cons (cons 'formulador::glue (asm-chain lexed-list))
-	       (make-parens-group
-		(nthcdr (deep-length (asm-chain lexed-list))
-			lexed-list))))
+	((detect-power lexed-list)
+	 (cons (make-exponent lexed-list)
+	       (make-parens-group (rest (rest (rest lexed-list))))))
 	((detect-frac lexed-list)
 	 (cons (frac-group lexed-list)
 	       (make-parens-group (rest (rest (rest lexed-list))))))
 	((detect-asm-chain lexed-list)
 	 (cons (cons 'formulador::glue (asm-chain lexed-list))
 	       (make-parens-group
-		(nthcdr (+ 1 (deep-length (asm-chain lexed-list)))
+		(nthcdr (+ 1 (deep-length (asm-chain (rest lexed-list))))
 			lexed-list))))
+	((detect-block lexed-list)
+	 (cons (car (block-eval (cadr (first lexed-list))))
+	       (make-parens-group
+		(nthcdr (deep-length (block-eval (rest lexed-list))) lexed-list))))
 	(t (cons (first lexed-list)
 		 (make-parens-group (rest lexed-list))))))
 
