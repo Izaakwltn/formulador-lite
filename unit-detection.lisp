@@ -8,6 +8,13 @@
   "Detects the beginning of a bracketed block."
   (equal (car (first lexed-line)) ':left-brack))
 
+(defun brack-length (lexed-line)
+  "Determines the number of elements before the end of a bracketed block."
+  (loop for i in lexed-line
+	until (equal (car (first lexed-line)) ':right-brack)
+	sum 1 into length
+	finally (return (- length 1))))
+
 (defun detect-end-brack (lexed-line)
   "Detects the end of a bracketed block."
   (equal (car (first lexed-line)) ':right-brack))
@@ -33,7 +40,7 @@
   "Detects whether there is a fraction."
   (equal (cdr (second lexed-line)) ':/))
 
-(defun detect-power (lexed-line)
+(defun detect-exp (lexed-line)
   "Detects whether there is an exponent."
   (equal (car (second lexed-line)) ':exponent))
 
