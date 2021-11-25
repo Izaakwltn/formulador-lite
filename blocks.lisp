@@ -2,12 +2,16 @@
 
 (in-package :formulador-lite)
 
+;;;;------------------------------------------------------------------------
+;;;;Generating a list of blocks and operators
+;;;;------------------------------------------------------------------------
+
 (defun make-block (lexed-list)
   "Builds a block as detected."
   (cond ((detect-end-brack lexed-list) nil)
 	((detect-brack lexed-list)
 	 (cons (list ':block (make-block (rest lexed-list)))
-	       (make-block (nthcdr (- (deep-length (make-block (rest lexed-list))) 1) lexed-list))))
+	       (make-block (nthcdr (+ 1 (brack-length lexed-list 0)) lexed-list))))
 	(t (cons (first lexed-list)
 		 (make-block (rest lexed-list))))))
 
@@ -23,19 +27,13 @@
 	((detect-end-brack lexed-list) (block-list (rest lexed-list)))
 	((detect-brack lexed-list)
 	 (cons (list ':block (make-block (rest lexed-list)))
-	       (block-list  (nthcdr (- (deep-length (make-block (rest lexed-list))) 1) lexed-list))))
+	       (block-list (nthcdr (+ 1 (brack-length (rest lexed-list) 0)) lexed-list))))
 	(t (cons (first lexed-list) (block-list (rest lexed-list))))))
 
-;test:
-;FORMULADOR-LITE> (block-list (lex-line "[a+b]/[c+d]"))
-;((:BLOCK ((:VARIABLE . |a|) (:OPERATOR . +) (:VARIABLE . |b|))) (:FRAC . :/)
-; (:BLOCK ((:VARIABLE . |c|) (:OPERATOR . +) (:VARIABLE . |d|))))
+;;;;------------------------------------------------------------------------
+;;;;Block Evaluation
+;;;;------------------------------------------------------------------------
 
-;;;;test examples desired input:
-
-;"x/y"
-
-; "[ [x / y]  + [w / [u + v]]] / [[p + q] / [r + [1 / s]]]"
 (defun block-eval (block-unit)
   "Evaluates a block."
   (cond ((null block-unit) nil)
@@ -44,7 +42,7 @@
 		     (make-parens-group (rest block-unit)))
 	       (block-eval (nthcdr (+ 1 (deep-length (make-parens-group (rest block-unit))))
 			block-unit))))
-	((detect-power block-unit)
+	((detect-exp block-unit)
 	 (cons (make-exponent block-unit)
 	       (block-eval (rest (rest (rest block-unit))))))
 	((detect-frac block-unit)
@@ -59,13 +57,17 @@
 		(nthcdr (+ 1 (deep-length (block-eval (rest block-unit)))) block-unit))))
         (t (cons (first block-unit) (block-eval (rest block-unit))))))
 
+;;;;------------------------------------------------------------------------
+;;;;Cycle through the blockified list and evaluate blocks and operators
+;;;;------------------------------------------------------------------------
+
 (defun block-cycle (blocked-list)
   "Cycles through a blocked list and evaluates the boxes, in addition to operators and variables."    
   (cond ((null blocked-list) nil)
 	((detect-paren blocked-list)
 	 (cons (cons 'formulador::parens-box (make-parens-group (rest blocked-list)))
 	       (block-cycle (nthcdr (deep-length (make-parens-group (rest blocked-list))) blocked-list))))
-	((detect-power blocked-list)
+	((detect-exp blocked-list)
 	 (cons (make-exponent blocked-list)
 	       (block-cycle (rest (rest (rest blocked-list))))))
 	((detect-frac blocked-list)
@@ -82,12 +84,4 @@
 	(t (cons (first blocked-list)
 		 (block-cycle (rest blocked-list))))))
 
-	    
-
-
-
-					;test
-;FORMULADOR-LITE> (block-cycle (block-list (lex-line "[(1/2)]")))
-;(((FORMULADOR:PARENS-BOX
-;   (FORMULADOR:FRAC-BOX (FORMULADOR:BOX "1") (FORMULADOR:BOX "2")))))
-
+;;;;------------------------------------------------------------------------	    

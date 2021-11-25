@@ -15,8 +15,7 @@
 	       (:file "unit-detection")
 	       (:file "blocks")
 	       (:file "parentheses")
-	       (:file "exponents")
-	       (:file "fractions")
-	       (:file "asm-chains")
-	       (:file "simple-draw")))
+	       (:file "operators")
+	       (:file "simple-draw")
+	       (:file "interpreter"))
 	       

@@ -11,12 +11,12 @@
 	(if (equal (car (first lexed-list)) ':block)
             (car (block-eval (second (first lexed-list))))  
 	    (list 'formulador::box
-		  (write-to-string (cdr (first lexed-list)))))
+		  (cdr (first lexed-list))))
 	':superscript
 	(if (equal (car (third lexed-list)) ':block)
 	    (car (block-eval (second (third lexed-list)))) 
 	    (list 'formulador::box
-		  (write-to-string (cdr (third lexed-list)))))))
+		  (cdr (third lexed-list))))))
 
 ;;;;------------------------------------------------------------------------
 ;;;;Fractions
@@ -30,13 +30,13 @@
 		  (list 'list
 			(car (block-eval (second (first lexed-list))))))
 	    (list 'formulador::box
-		  (write-to-string (cdr (first lexed-list)))))
+		  (cdr (first lexed-list))))
 	(if (equal (car (third lexed-list)) ':block)
 	    (list 'formulador::row-box
 		  (list 'list
 			(car (block-eval (second (third lexed-list))))))
 	    (list 'formulador::box
-		  (write-to-string (cdr (third lexed-list)))))))
+		  (cdr (third lexed-list))))))
 
 ;;;;------------------------------------------------------------------------
 ;;;;Addition, subtraction, and  multiplication chains
@@ -54,8 +54,7 @@
 	    (list 'formulador::box
 		  (concatenate 'string
 			       " "
-			       (write-to-string
-				(cdr (first lexed-list)))
+				(cdr (first lexed-list))
 			       " "))
 	    (asm-chain (rest lexed-list))))))
 
