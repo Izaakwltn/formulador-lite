@@ -4,4 +4,5 @@
   (:use #:cl)
 
   (:export
-   #:simple-draw))
+   #:simple-draw
+   #:start-drawing))
