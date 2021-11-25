@@ -11,7 +11,7 @@
 (defun brack-length (lexed-line counter)
   "Determines the number of elements before the end of a bracketed block."
   (cond ((detect-end-brack lexed-line) counter)
-	(t (brack-length (rest lexed-line) (+ counter 1)))))(
+	(t (brack-length (rest lexed-line) (+ counter 1)))))
 
     (defun detect-end-brack (lexed-line)
   "Detects the end of a bracketed block."

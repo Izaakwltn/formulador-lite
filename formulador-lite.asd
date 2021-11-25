@@ -17,5 +17,5 @@
 	       (:file "parentheses")
 	       (:file "operators")
 	       (:file "simple-draw")
-	       (:file "interpreter"))
+	       (:file "interpreter")))
 	       
