@@ -13,10 +13,18 @@
 	    (list 'formulador::box
 		  (cdr (first lexed-list))))
 	':superscript
-	(if (equal (car (third lexed-list)) ':block)
-	    (car (block-eval (second (third lexed-list)))) 
-	    (list 'formulador::box
-		  (cdr (third lexed-list))))))
+	(cond ((and (equal (car (third lexed-list)) ':block)
+		    (equal (first (second (second (car (cddr lexed-list)))))
+			   ':frac))
+	       (list 'formulador::box
+		     (concatenate 'string
+				  (cdar (cadr (third lexed-list)))
+				  "/"
+				  (cdr (third (cadr (third lexed-list)))))))
+	      ((equal (car (third lexed-list)) ':block)
+	       (car (block-eval (second (third lexed-list))))) 
+	      (t (list 'formulador::box
+		  (cdr (third lexed-list)))))))
 
 ;;;;------------------------------------------------------------------------
 ;;;;Fractions

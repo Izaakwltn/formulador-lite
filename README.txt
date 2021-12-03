@@ -43,3 +43,18 @@ with 35 defined regions>
 stop
 Drawing terminated
 NIL
+
+
+A few notes:
+
+1. For now, nested parentheses require interwoven brackets:
+
+  ((1+2))
+  Control stack guard page temporarily disabled: proceed with caution
+
+  ([(1+2)])
+  #<CANVAS 
+  +-------------+
+  |(( 1  +  2 ))|
+  +-------------+
+  with 12 defined regions>

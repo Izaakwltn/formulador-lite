@@ -26,7 +26,7 @@
 	((detect-asm-chain lexed-list)
 	 (cons (cons 'formulador::glue (asm-chain lexed-list))
 	       (make-parens-group
-		(nthcdr (+ 1 (deep-length (asm-chain (rest lexed-list))))
+		(nthcdr (+ 1 (length (asm-chain (rest lexed-list))))
 			lexed-list))))
 	((detect-block lexed-list)
 	 (cons (car (block-eval (cadr (first lexed-list))))
